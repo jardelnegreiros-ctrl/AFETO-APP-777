@@ -1,0 +1,169 @@
+{
+  "entities": {
+    "Produto": {
+      "title": "Produto",
+      "description": "Item do catálogo da AFETO",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "nome": { "type": "string", "maxLength": 200 },
+        "descricao": { "type": "string", "maxLength": 1000 },
+        "precoCusto": { "type": "number" },
+        "precoVenda": { "type": "number" },
+        "categoriaId": { "type": "string", "maxLength": 128 },
+        "codigoBarras": { "type": "string", "maxLength": 100 },
+        "dataValidade": { "type": "string", "maxLength": 50 },
+        "estoqueAtual": { "type": "number" },
+        "estoqueMinimo": { "type": "number" },
+        "imagemUrl": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "maxLength": 100 },
+        "updatedAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["id", "nome", "precoVenda", "estoqueAtual"]
+    },
+    "Cliente": {
+      "title": "Cliente",
+      "description": "Cliente cadastrado na AFETO",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "nome": { "type": "string", "maxLength": 200 },
+        "email": { "type": "string", "maxLength": 200 },
+        "telefone": { "type": "string", "maxLength": 50 },
+        "endereco": { "type": "string", "maxLength": 500 },
+        "cpf": { "type": "string", "maxLength": 20 },
+        "notas": { "type": "string", "maxLength": 1000 },
+        "totalCompras": { "type": "number" },
+        "createdAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["id", "nome"]
+    },
+    "Venda": {
+      "title": "Venda",
+      "description": "Registro de venda de cesta ou produto",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "codigoVenda": { "type": "string", "maxLength": 50 },
+        "clienteId": { "type": "string", "maxLength": 128 },
+        "clienteNome": { "type": "string", "maxLength": 200 },
+        "valorSubtotal": { "type": "number" },
+        "valorDesconto": { "type": "number" },
+        "valorTotal": { "type": "number" },
+        "formaPagamento": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "maxLength": 50 },
+        "observacoes": { "type": "string", "maxLength": 1000 },
+        "criadoPor": { "type": "string", "maxLength": 200 },
+        "dataVenda": { "type": "string", "maxLength": 100 },
+        "dataEntrega": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["id", "codigoVenda", "valorTotal", "status"]
+    },
+    "ItemVenda": {
+      "title": "ItemVenda",
+      "description": "Item individual de uma venda",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "vendaId": { "type": "string", "maxLength": 128 },
+        "produtoId": { "type": "string", "maxLength": 128 },
+        "produtoNome": { "type": "string", "maxLength": 200 },
+        "quantidade": { "type": "number" },
+        "precoUnitario": { "type": "number" },
+        "precoCustoUnitario": { "type": "number" },
+        "subtotal": { "type": "number" }
+      },
+      "required": ["id", "vendaId", "produtoId", "quantidade", "subtotal"]
+    },
+    "FluxoDeCaixa": {
+      "title": "FluxoDeCaixa",
+      "description": "Lançamento de movimentação financeira",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "tipo": { "type": "string", "maxLength": 20 },
+        "descricao": { "type": "string", "maxLength": 500 },
+        "valor": { "type": "number" },
+        "categoria": { "type": "string", "maxLength": 100 },
+        "vendaId": { "type": "string", "maxLength": 128 },
+        "data": { "type": "string", "maxLength": 100 },
+        "criadoPor": { "type": "string", "maxLength": 200 },
+        "observacoes": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["id", "tipo", "descricao", "valor"]
+    },
+    "PesquisaSatisfacao": {
+      "title": "PesquisaSatisfacao",
+      "description": "Pesquisa de satisfação do cliente",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "vendaId": { "type": "string", "maxLength": 128 },
+        "rating": { "type": "number" },
+        "comment": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["id", "rating"]
+    },
+    "Categoria": {
+      "title": "Categoria",
+      "description": "Categoria de produto",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "nome": { "type": "string", "maxLength": 100 },
+        "icone": { "type": "string", "maxLength": 50 },
+        "cor": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "nome"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Usuário com permissão do sistema",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 200 },
+        "email": { "type": "string", "maxLength": 200 },
+        "role": { "type": "string", "maxLength": 50 },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["id", "name", "email", "role"]
+    }
+  },
+  "firestore": {
+    "/produtos/{produtoId}": {
+      "schema": { "$ref": "#/entities/Produto" },
+      "description": "Coleção de produtos do catálogo"
+    },
+    "/clientes/{clienteId}": {
+      "schema": { "$ref": "#/entities/Cliente" },
+      "description": "Coleção de clientes cadastrados"
+    },
+    "/vendas/{vendaId}": {
+      "schema": { "$ref": "#/entities/Venda" },
+      "description": "Coleção de vendas"
+    },
+    "/itensVenda/{itemId}": {
+      "schema": { "$ref": "#/entities/ItemVenda" },
+      "description": "Coleção de itens das vendas"
+    },
+    "/fluxoDeCaixa/{lancamentoId}": {
+      "schema": { "$ref": "#/entities/FluxoDeCaixa" },
+      "description": "Coleção de lançamentos de caixa"
+    },
+    "/pesquisasSatisfacao/{pesquisaId}": {
+      "schema": { "$ref": "#/entities/PesquisaSatisfacao" },
+      "description": "Coleção de avaliações públicas de satisfação"
+    },
+    "/categorias/{categoriaId}": {
+      "schema": { "$ref": "#/entities/Categoria" },
+      "description": "Coleção de categorias"
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Coleção de usuários do sistema"
+    }
+  }
+}

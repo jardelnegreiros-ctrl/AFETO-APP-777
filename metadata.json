@@ -1,0 +1,6 @@
+{
+  "name": "AFETO",
+  "description": "Sistema de gestão financeira e operacional para loja de cestas de café da manhã",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

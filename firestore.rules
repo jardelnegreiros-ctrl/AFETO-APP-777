@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isValidId(id) {
+      return id is string && id.size() <= 128;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Public survey responses (public create allowed, read/manage by authenticated staff)
+    match /pesquisasSatisfacao/{pesquisaId} {
+      allow create: if request.resource.data.rating is number;
+      allow read, update, delete: if isSignedIn();
+    }
+
+    // Operational collections
+    match /produtos/{produtoId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /clientes/{clienteId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /vendas/{vendaId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /itensVenda/{itemId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /fluxoDeCaixa/{lancamentoId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /categorias/{categoriaId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /users/{userId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /suppliers/{supplierId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /stockMovements/{movementId} {
+      allow read, write: if isSignedIn();
+    }
+  }
+}
