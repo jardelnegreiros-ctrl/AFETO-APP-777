@@ -1,0 +1,10 @@
+# Development
+node_modules/
+.next/
+dist/
+.env.local
+.env.development.local
+
+# Production
+.out/
+/build/

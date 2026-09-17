@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String?
+  name          String
+  avatarUrl     String? @map("avatar_url")
+  timezone      String    @default("America/Sao_Paulo")
+  googleId      String?   @unique @map("google_id")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  reminders     Reminder[]
+  whatsappProfile WhatsappProfile?
+  sessions      Session[]
+}
+
+model Reminder {
+  id                  String   @id @default(uuid())
+  userId              String   @map("user_id")
+  title               String
+  description         String?
+  scheduledAt         DateTime @map("scheduled_at")
+  timezone            String   @default("America/Sao_Paulo")
+  category            String?
+  isActive            Boolean  @default(true) @map("is_active")
+  isCompleted         Boolean  @default(false) @map("is_completed")
+  repeats             String?
+  repeatInterval      Int?     @map("repeat_interval")
+  notifyBeforeMinutes Int[]    @map("notify_before_minutes")
+  whatsappNotified    Boolean  @default(false) @map("whatsapp_notified")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+  completedAt         DateTime? @map("completed_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages WhatsappMessage[]
+}
+
+model WhatsappProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique @map("user_id")
+  phoneNumber   String   @unique @map("phone_number")
+  waInstanceId  String?  @map("wa_instance_id")
+  waAccessToken String?  @map("wa_access_token")
+  isLinked      Boolean  @default(false)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WhatsappMessage {
+  id                String   @id @default(uuid())
+  userId            String   @map("user_id")
+  direction         String
+  content           Text
+  waMessageId       String?  @map("wa_message_id")
+  status            String   @default("pending")
+  parsedCommand     String?  @map("parsed_command")
+  relatedReminderId String?  @map("related_reminder_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reminder   Reminder? @relation(fields: [relatedReminderId], references: [id])
+}
+
+model Session {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  tokenHash  String   @map("token_hash")
+  expiresAt  DateTime @map("expires_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
